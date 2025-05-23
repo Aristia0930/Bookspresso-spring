@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,13 +34,14 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/rest/user")
-@CrossOrigin("*")
+//@CrossOrigin("*")
 @Tag(name = "user controller", description = "사용자 로그인등 사용자 기능을 정의한다.")
 public class UserRestController {
 	private List<Level> levels;
 	@Autowired
 	private UserService service;
-	
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 	@PostMapping("/login")
 	public ResponseEntity<User> login(@RequestBody User user,HttpServletResponse response){
 		
@@ -74,6 +76,10 @@ public class UserRestController {
     
     @PostMapping("")
     public boolean join(@RequestBody User user) {
+        System.out.printf("회원가입");
+        String encodedPassword = passwordEncoder.encode(user.getPass());
+        user.setPass(encodedPassword);
+        user.setRole("ROLE_USER");
     	int result = service.join(user);
     	if (result == 1 ) {
     		System.out.println();

@@ -1,6 +1,7 @@
 package com.ssafy.cafe.model.dto;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +18,12 @@ public class User {
     private String provider;
 
     private List<Stamp> stampList = new ArrayList<>();
-
+    public List<String> getRoleList(){
+        if(this.role.length()>0){
+            return Arrays.asList(this.role.split(","));
+        }
+        return new ArrayList<>();
+    }
     public User(String id, String name, String pass, Integer stamps) {
         this.id = id;
         this.name = name;
