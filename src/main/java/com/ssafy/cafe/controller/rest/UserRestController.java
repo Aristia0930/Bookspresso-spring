@@ -5,9 +5,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.cafe.config.auth.PrincipalDetails;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
@@ -37,6 +42,7 @@ import jakarta.servlet.http.HttpServletResponse;
 //@CrossOrigin("*")
 @Tag(name = "user controller", description = "사용자 로그인등 사용자 기능을 정의한다.")
 public class UserRestController {
+    private static final Logger log = LoggerFactory.getLogger(UserRestController.class);
 	private List<Level> levels;
 	@Autowired
 	private UserService service;
@@ -44,7 +50,7 @@ public class UserRestController {
     private PasswordEncoder passwordEncoder;
 	@PostMapping("/login")
 	public ResponseEntity<User> login(@RequestBody User user,HttpServletResponse response){
-		
+
 		System.out.println(user);
 		User info=service.login(user.getId(), user.getPass());
 	    if (info == null) {
@@ -57,21 +63,49 @@ public class UserRestController {
 	    }
 		System.out.println(info);
 		return ResponseEntity.ok(info);
-		
-	}
-	
-	@PostMapping("/info")
-	public ResponseEntity<UserInfo> userInfo(@RequestBody User user){
-		UserInfo info=service.userInfo(user.getId());
-		System.out.println(info.toString());
-		//여기서 등급분류하자.
 
-		 Map<String, Object> grade =getGrade(info.getUser().getStamps());
-		 System.out.println(getGrade(225));
-		info.setGrade(new Grade((String) grade.get("img"),(Integer) grade.get("step"), (Integer) grade.get("stepMax"), (Integer) grade.get("to"), (String) grade.get("title")));
-		return ResponseEntity.ok(info);
 	}
-	
+
+
+    // 유저정보 린터하기
+
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/info")
+    public ResponseEntity<User> userInfo(@AuthenticationPrincipal PrincipalDetails userDetails) {
+        String userId = userDetails.getUsername();  // 또는 userDetails.getUser().getId()
+
+        User info=service.selectUser(userId);
+
+        log.debug(userId);
+        log.debug(String.valueOf(info));
+
+        if (info == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        System.out.println(info);
+        return ResponseEntity.ok(info);
+    }
+
+    //토큰 유효한지만 확인하기
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/check")
+    public ResponseEntity<Boolean> checkJwt() {
+
+        return ResponseEntity.ok(true);
+    }
+
+//	@PostMapping("/info")
+//	public ResponseEntity<UserInfo> userInfo(@RequestBody User user){
+//		UserInfo info=service.userInfo(user.getId());
+//		System.out.println(info.toString());
+//		//여기서 등급분류하자.
+//
+//		 Map<String, Object> grade =getGrade(info.getUser().getStamps());
+//		 System.out.println(getGrade(225));
+//		info.setGrade(new Grade((String) grade.get("img"),(Integer) grade.get("step"), (Integer) grade.get("stepMax"), (Integer) grade.get("to"), (String) grade.get("title")));
+//		return ResponseEntity.ok(info);
+//	}
+//
 
     
     @PostMapping("")
