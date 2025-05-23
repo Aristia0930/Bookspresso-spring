@@ -98,7 +98,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String jwtToken= JWT.create()
                 .withSubject(principalDetails.getUsername())//토큰이름
-                .withExpiresAt(new Date(System.currentTimeMillis()+(60000*10)))//만료 시간 60000 이 1분
+                .withExpiresAt(new Date(System.currentTimeMillis()+(60000*120)))//만료 시간 60000 이 1분
                 .withClaim("id",principalDetails.getUser().getId())
                 .withClaim("username",principalDetails.getUser().getName())
                 .sign(Algorithm.HMAC512("code"));//내 고유의값.
