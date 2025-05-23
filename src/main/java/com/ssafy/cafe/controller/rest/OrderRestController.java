@@ -4,13 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.cafe.model.dto.Order;
 import com.ssafy.cafe.model.dto.OrderDetail;
@@ -67,7 +61,7 @@ public class OrderRestController {
     @Operation(summary="{id}에 해당하는 사용자의 최근 1개월간 주문 내역을 반환한다."
             + "반환 정보는 1차 주문번호 내림차순, 2차 주문 상세 오름차순으로 정렬된다.", 
             description = "관통프로젝트 6단계(Android)에서 사용됨.")
-    public List<OrderInfo> getLastMonthOrder(String id) {
+    public List<OrderInfo> getLastMonthOrder(@RequestParam String id) {
         return oService.getLastMonthOrder(id);
     }    
     
@@ -76,7 +70,7 @@ public class OrderRestController {
     @Operation(summary="{id}에 해당하는 사용자의 최근 6개월간 주문 내역을 반환한다."
             + "반환 정보는 1차 주문번호 내림차순, 2차 주문 상세 오름차순으로 정렬된다.", 
             description = "관통프로젝트 6단계(Android)에서 사용됨.")
-    public List<OrderInfo> getLast6MonthOrder(String id) {
+    public List<OrderInfo> getLast6MonthOrder(@RequestParam String id) {
         return oService.getLast6MonthOrder(id);
     } 
 	
