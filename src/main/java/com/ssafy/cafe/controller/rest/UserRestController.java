@@ -69,15 +69,29 @@ public class UserRestController {
 
     // 유저정보 린터하기
 
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
+//    @PostMapping("/info")
+//    public ResponseEntity<User> userInfo(@AuthenticationPrincipal PrincipalDetails userDetails) {
+//        String userId = userDetails.getUsername();  // 또는 userDetails.getUser().getId()
+//
+//        User info=service.selectUser(userId);
+//
+//        log.debug(userId);
+//        log.debug(String.valueOf(info));
+//
+//        if (info == null) {
+//            return ResponseEntity.badRequest().build();
+//        }
+//        System.out.println(info);
+//        return ResponseEntity.ok(info);
+//    }
+
     @PostMapping("/info")
-    public ResponseEntity<User> userInfo(@AuthenticationPrincipal PrincipalDetails userDetails) {
-        String userId = userDetails.getUsername();  // 또는 userDetails.getUser().getId()
+    public ResponseEntity<User> userInfo(@RequestBody User user) {
 
-        User info=service.selectUser(userId);
+        User info=service.selectUser(user.getId());
 
-        log.debug(userId);
-        log.debug(String.valueOf(info));
+
 
         if (info == null) {
             return ResponseEntity.badRequest().build();
