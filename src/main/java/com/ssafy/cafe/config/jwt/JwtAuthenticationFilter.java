@@ -79,7 +79,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 Unauthorized
             return null; // 인증 실패 시 null 반환 (기본적으로 Spring Security에서 처리됨)
         } catch (Exception e) {
-            System.out.println("🚨 예상하지 못한 예외 발생: " + e.getMessage());
+            System.out.println("🚨 예상하지 못한 예외 발생wnd: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
