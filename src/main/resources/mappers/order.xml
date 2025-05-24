@@ -157,6 +157,12 @@
     </resultMap>
 
 
+    <update id="updateOrderStatus">
+        UPDATE t_order
+        SET completed = #{statusCode}
+        WHERE o_id = #{orderId}
+    </update>
+
     
 	
 </mapper>

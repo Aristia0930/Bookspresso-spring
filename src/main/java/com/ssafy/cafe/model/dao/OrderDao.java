@@ -81,4 +81,6 @@ public interface OrderDao {
 
     List<OrderInfo> getOrder();
 
+    int updateOrderStatus(Long orderId, String statusCode);
+
 }

@@ -11,5 +11,27 @@
         select * from t_book where isbn=#{isbn}
     </select>
 
+    <insert id="addRental" parameterType="BookRental">
+        INSERT INTO t_book_rental (user_id, isbn, rental_date, due_date, fee, status)
+        VALUES (#{userId}, #{isbn}, #{rentalDate}, #{dueDate}, #{fee}, #{status})
+    </insert>
+
+
+
+    <select id="getRentalList" resultType="BookRental">
+        select * from t_book_rental order by rental_date desc
+    </select>
+
+    <update id="returned" parameterType="BookRental">
+        UPDATE t_book_rental
+        SET status = 'returned',
+        due_date = #{dueDate},
+        fee = #{fee}
+        WHERE rental_id = #{rentalId}
+    </update>
+
+    <select id="getRental" parameterType="string" resultType="BookRental">
+        SELECT * FROM t_book_rental WHERE rental_id = #{rentalId}
+    </select>
 
 </mapper>

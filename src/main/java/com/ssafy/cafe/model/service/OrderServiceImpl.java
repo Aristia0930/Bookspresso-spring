@@ -118,5 +118,10 @@ public class OrderServiceImpl implements OrderService {
         return oDao.getOrder();
     }
 
+    @Override
+    public int updateOrderStatus(Long orderId, String statusCode) {
+        return oDao.updateOrderStatus(orderId,statusCode);
+    }
+
 
 }

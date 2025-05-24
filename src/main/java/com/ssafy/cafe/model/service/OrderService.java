@@ -72,4 +72,8 @@ public interface OrderService {
 
     //전최 조회
     List<OrderInfo> getOrder();
+
+    int updateOrderStatus(Long orderId,String statusCode);
+
+
 }
