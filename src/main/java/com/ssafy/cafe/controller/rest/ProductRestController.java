@@ -2,6 +2,7 @@ package com.ssafy.cafe.controller.rest;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +25,8 @@ public class ProductRestController {
 	private ProductService productService;
 	
 	@GetMapping("")
+	@Operation(summary="음식 전체 조회",
+			description = "")
 	public ResponseEntity<List<Product>> getProducts(){
 		List<Product> products=productService.getProductList();
 		
@@ -35,6 +38,8 @@ public class ProductRestController {
 	}
 	
 	@GetMapping("/{productId}")
+	@Operation(summary="음식 아이디로 음식 조화",
+			description = "")
 	public ProductWithComment selectWithComment(@PathVariable Integer productId) {
 		
 		ProductWithComment comment=productService.selectWithComment(productId);

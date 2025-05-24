@@ -1,5 +1,6 @@
 package com.ssafy.cafe.controller.rest;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +25,8 @@ public class CommentRestController {
     private CommentService service;
     
     @PostMapping("")
+	@Operation(summary="평가 추가",
+			description = "평가 dto를 넘기면 추가됨")
     public boolean addComment(@RequestBody Comment comment) {
     	System.out.println(comment.toString());
     	int result = service.addComment(comment);
@@ -38,6 +41,8 @@ public class CommentRestController {
 
     
     @DeleteMapping("/{id}")
+	@Operation(summary="평가 아이디로 삭제",
+			description = "")
     public boolean removeComment(@PathVariable int id) {
     	
     	int result = service.removeComment(id);
@@ -52,6 +57,8 @@ public class CommentRestController {
     		
 
     @PutMapping("")
+	@Operation(summary="평가 수정",
+			description = "")
     public boolean update(@RequestBody Comment comment) {
     	System.out.println(comment.toString());
     	int result = service.updateComment(comment);

@@ -4,8 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+
 
 import com.ssafy.cafe.config.auth.PrincipalDetails;
+import io.swagger.v3.oas.annotations.Operation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +24,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,8 +52,21 @@ public class UserRestController {
 	private UserService service;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "예시 요청",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            name = "기본 예제",
+                            value = "{ \"id\": \"3\", \"pass\": \"3\" }"
+                    )
+            )
+    )
 	@PostMapping("/login")
 	public ResponseEntity<User> login(@RequestBody User user,HttpServletResponse response){
+
 
 		System.out.println(user);
 		User info=service.login(user.getId(), user.getPass());
@@ -87,6 +104,7 @@ public class UserRestController {
 //    }
 
     @PostMapping("/info")
+    @Operation(summary="유저 정보 리턴")
     public ResponseEntity<User> userInfo(@RequestBody User user) {
 
         User info=service.selectUser(user.getId());
@@ -103,6 +121,7 @@ public class UserRestController {
     //토큰 유효한지만 확인하기
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/check")
+    @Operation(summary="토큰이 유효한지 체크")
     public ResponseEntity<Boolean> checkJwt() {
 
         return ResponseEntity.ok(true);
@@ -123,6 +142,7 @@ public class UserRestController {
 
     
     @PostMapping("")
+    @Operation(summary="회원가입")
     public boolean join(@RequestBody User user) {
         System.out.printf("회원가입");
         String encodedPassword = passwordEncoder.encode(user.getPass());

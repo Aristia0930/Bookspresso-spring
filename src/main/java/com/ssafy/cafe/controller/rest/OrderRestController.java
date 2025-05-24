@@ -23,6 +23,8 @@ public class OrderRestController {
 
     
     @PostMapping("")
+    @Operation(summary="order dto를 넘기면 주문 넣기",
+            description = "")
     public ResponseEntity<Integer> order(@RequestBody Order order){
     	
     	System.out.println(order.toString());
@@ -43,6 +45,8 @@ public class OrderRestController {
     }
     
     @GetMapping("/{orderId}")
+    @Operation(summary="주문번호를 가지고 그 주문에 대한 상세 정보확인",
+            description = "")
     public OrderInfo getOrderDetails(@PathVariable int orderId) {
     	
     	System.out.println(orderId);
@@ -51,11 +55,9 @@ public class OrderRestController {
     	
     	return order;
     }
-    
-    
-    
-    
-    
+
+
+
     
     @GetMapping("/byUser")
     @Operation(summary="{id}에 해당하는 사용자의 최근 1개월간 주문 내역을 반환한다."
