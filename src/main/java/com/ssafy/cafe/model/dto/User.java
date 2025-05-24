@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+
 public class User {
     private String id;
     private String name;
@@ -30,8 +33,11 @@ public class User {
         this.pass = pass;
         this.stamps = stamps;
     }
+    public User(){
+
+    }
 //    
-    public User() {}
+
     
 //
 //

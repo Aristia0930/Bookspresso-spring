@@ -106,6 +106,8 @@ public class UserRestController {
     @PostMapping("/info")
     @Operation(summary="유저 정보 리턴")
     public ResponseEntity<User> userInfo(@RequestBody User user) {
+        System.out.println("여기인가");
+        System.out.println(user);
 
         User info=service.selectUser(user.getId());
 

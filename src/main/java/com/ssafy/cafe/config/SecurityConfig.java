@@ -53,8 +53,8 @@ public class SecurityConfig  {
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/idcheck", "/rest/user/login", "/rest/user/**").permitAll()
 //                                .requestMatchers("/rest/user/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                                .requestMatchers("/rest/product/**","/rest/order/**").hasAnyRole("USER", "MANAGER")
-                                .requestMatchers("/rest/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/rest/product/**","/rest/order/**","/rest/book/**").hasAnyRole("USER", "MANAGER")
+                                .requestMatchers("/rest/manager/**").hasRole("MANAGER")
                                 .anyRequest().permitAll() // 그 외 경로는 인증 없이 접근
                         // 가능
                 )
