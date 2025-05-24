@@ -9,4 +9,6 @@ public interface BookService {
 
 
     List<Book> getBookList();
+
+    Book getBook(String isbn);
 }

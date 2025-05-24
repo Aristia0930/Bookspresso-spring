@@ -7,4 +7,6 @@ import java.util.List;
 public interface BookDao {
 
     List<Book> getBookList();
+
+    Book getBook(String isbn);
 }

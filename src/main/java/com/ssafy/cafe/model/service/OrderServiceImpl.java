@@ -105,11 +105,18 @@ public class OrderServiceImpl implements OrderService {
         return oDao.getLast6MonthOrder(id);
     }
 
-	@Override
+
+
+    @Override
 	public Order getOrderDetails(Integer orderId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+    @Override
+    public List<OrderInfo> getOrder() {
+        return oDao.getOrder();
+    }
 
 
 }

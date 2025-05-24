@@ -135,11 +135,28 @@
         where user_id = #{id} and order_time > date_add(now(), interval -6 month)
         order by o.o_id desc
     </select>
+
+
+    <select id="getOrder" resultMap="OrderResult">
+        select
+            o.o_id id
+             , o.user_id
+             , o.order_table
+             , o.order_time
+             , o.completed
+             , o.o_id as order_id
+        from t_order o
+        order by o.o_id desc
+    </select>
+
+
         
     <resultMap id="OrderResult" type="OrderInfo">
         <collection property="details" javaType="ArrayList" column="order_id" ofType="OrderDetailInfo" 
          select="getOrderDetailInfo"/>
     </resultMap>
+
+
     
 	
 </mapper>

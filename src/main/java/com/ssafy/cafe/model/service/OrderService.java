@@ -69,4 +69,7 @@ public interface OrderService {
      * @return
      */
     List<OrderInfo> getLast6MonthOrder(String id);
+
+    //전최 조회
+    List<OrderInfo> getOrder();
 }

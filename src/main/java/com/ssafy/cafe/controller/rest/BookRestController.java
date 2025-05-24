@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +31,14 @@ public class BookRestController {
         return ResponseEntity.ok(list); 
     }
 
+    @GetMapping("/{isbn}")
+    @Operation(summary="책단건 조회",
+            description = "isbn 값을 이용하여 책을 단건 조회한다")
+    public ResponseEntity<Book> getBook(@PathVariable String isbn){
+        Book book=bookService.getBook(isbn);
+
+        return ResponseEntity.ok(book);
+    }
 
 
 }

@@ -78,4 +78,7 @@ public interface OrderDao {
      * @return
      */
     List<OrderDetailInfo> getOrderDetailInfo(int orderId);
+
+    List<OrderInfo> getOrder();
+
 }
