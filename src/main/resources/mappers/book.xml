@@ -34,6 +34,11 @@
         SELECT * FROM t_book_rental WHERE rental_id = #{rentalId}
     </select>
 
+    <select id="getRental2" parameterType="string" resultType="BookRental">
+        SELECT * FROM t_book_rental
+        WHERE isbn = #{isbn}
+          AND status IN ('rented', 'overdue')
+    </select>
     <update id="updateOverdueRentals">
     <![CDATA[
         UPDATE t_book_rental

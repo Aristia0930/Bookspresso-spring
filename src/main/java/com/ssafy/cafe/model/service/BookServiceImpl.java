@@ -65,4 +65,35 @@ public class BookServiceImpl implements BookService{
 
         return bookDao.returned(rental);
     }
+
+    @Override
+    public int returned2(String isbn) {
+        //일차적으로 조회해서 가져와서 수정
+        BookRental rental = bookDao.getRental2(isbn);
+
+        LocalDate today = LocalDate.now(); // 현재 날짜
+
+        // 1. java.util.Date로 받아오기
+        java.util.Date dueDateUtil = rental.getDueDate();
+
+// 2. java.sql.Date로 변환
+        java.sql.Date dueDateSql = new java.sql.Date(dueDateUtil.getTime());
+
+// 3. LocalDate 변환
+        LocalDate dueDate = dueDateSql.toLocalDate();
+
+// 연체 일수 계산 (음수면 0일)
+        long overdueDays = java.time.temporal.ChronoUnit.DAYS.between(dueDate, today);
+        overdueDays = Math.max(overdueDays, 0); // overdueDays가 음수일 경우 0으로 설정
+
+// 연체료 계산: 예: 하루당 1000원
+        int fee = (int) overdueDays * 1000;
+
+        rental.setFee(rental.getFee()+fee);
+        rental.setDueDate(Date.valueOf(today)); // 반납일을 오늘로
+        rental.setStatus("returned");
+
+        return bookDao.returned(rental);
+    }
+
 }

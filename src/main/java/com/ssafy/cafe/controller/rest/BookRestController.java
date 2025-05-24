@@ -85,6 +85,20 @@ public class BookRestController {
 
     }
 
+    //책 반납 isbn
+    @PutMapping("/rental2/{isbn}")
+    @Operation(summary="책반납",
+            description = "isbn 기반으로 반밥 상태로 수정")
+    public  ResponseEntity<Boolean> addRental2(@PathVariable String isbn){
+        int result = bookService.returned2(isbn);
+        if(result==1){
+            return ResponseEntity.ok(true);
+        }else{
+            return ResponseEntity.badRequest().build();
+        }
+
+    }
+
     //유저 대역 내역 조회
     @GetMapping("/rental/{userId}")
     @Operation(summary="유저아이디로 대여내역조회",

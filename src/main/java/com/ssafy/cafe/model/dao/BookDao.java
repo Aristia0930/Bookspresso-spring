@@ -21,5 +21,7 @@ public interface BookDao {
 
     BookRental getRental(String rentalId);
 
+    BookRental getRental2(String isbn);
+
     int updateOverdueRentals();
 }

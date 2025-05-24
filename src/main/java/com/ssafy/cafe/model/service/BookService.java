@@ -20,4 +20,5 @@ public interface BookService {
 
 
     int returned(String rentalId);
+    int returned2(String isbn);
 }
