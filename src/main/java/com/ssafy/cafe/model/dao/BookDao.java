@@ -2,8 +2,10 @@ package com.ssafy.cafe.model.dao;
 
 import com.ssafy.cafe.model.dto.Book;
 import com.ssafy.cafe.model.dto.BookRental;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+
 
 public interface BookDao {
 
@@ -18,4 +20,6 @@ public interface BookDao {
     int returned(BookRental rental);
 
     BookRental getRental(String rentalId);
+
+    int updateOverdueRentals();
 }

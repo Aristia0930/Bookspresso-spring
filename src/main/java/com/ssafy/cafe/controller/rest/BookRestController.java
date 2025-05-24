@@ -48,7 +48,7 @@ public class BookRestController {
     public  ResponseEntity<Boolean> addRental(@RequestBody BookRental bookRental){
         BookRental rental = new BookRental();
         LocalDate today = LocalDate.now();
-        LocalDate due = today.plusDays(3);
+        LocalDate due = today.plusDays(1);
 
         rental.setRentalDate(Date.valueOf(today));
         rental.setDueDate(Date.valueOf(due));

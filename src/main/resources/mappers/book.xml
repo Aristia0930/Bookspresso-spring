@@ -34,4 +34,14 @@
         SELECT * FROM t_book_rental WHERE rental_id = #{rentalId}
     </select>
 
+    <update id="updateOverdueRentals">
+    <![CDATA[
+        UPDATE t_book_rental
+        SET status = 'overdue'
+        WHERE status = 'rented'
+          AND due_date < CURDATE()
+        ]]>
+</update>
+
+
 </mapper>
