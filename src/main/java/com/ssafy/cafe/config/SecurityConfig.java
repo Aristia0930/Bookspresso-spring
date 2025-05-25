@@ -51,7 +51,7 @@ public class SecurityConfig  {
                 .formLogin(form -> form.disable()) // 폼 로그인 비활성화
                 .httpBasic(basic -> basic.disable()) // HTTP Basic 인증 비활성화
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/idcheck", "/rest/user/login", "/rest/user/**").permitAll()
+                                .requestMatchers("/idcheck", "/rest/user/login", "/rest/user/**","/rest/payment/**").permitAll()
 //                                .requestMatchers("/rest/user/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                                 .requestMatchers("/rest/product/**","/rest/order/**","/rest/book/**").hasAnyRole("USER", "MANAGER")
                                 .requestMatchers("/rest/manager/**").hasRole("MANAGER")
