@@ -1,0 +1,36 @@
+<!-- src/main/resources/static/success.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>결제 완료</title>
+</head>
+<body>
+<h1>🎉 결제가 성공적으로 완료되었습니다.</h1>
+<p id="paymentInfo">결제 정보를 가져오는 중...</p>
+
+<script>
+    // URL 파라미터에서 pg_token 가져오기
+    const urlParams = new URLSearchParams(window.location.search);
+    const pgToken = urlParams.get('pg_token');
+
+    // 예: 서버에 결제 내역 조회 요청
+    fetch('/rest/payment/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pgToken: pgToken })
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data === true) {
+                document.getElementById('paymentInfo').innerText = '결제가 완료되었습니다.';
+            } else {
+                document.getElementById('paymentInfo').innerText = '결제 상태를 확인할 수 없습니다.';
+            }
+        })
+        .catch(err => {
+            document.getElementById('paymentInfo').innerText = '결제 조회 중 오류가 발생했습니다.';
+        });
+</script>
+</body>
+</html>
