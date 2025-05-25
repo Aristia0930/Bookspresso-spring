@@ -39,7 +39,7 @@ public class KakaoPayService {
         requestDto.setApproval_url("ttps://port-0-bookcafe-m5al105w4c7a25c2.sel4.cloudtype.app/rest/payment/success");
         requestDto.setCancel_url("ttps://port-0-bookcafe-m5al105w4c7a25c2.sel4.cloudtype.app/rest/payment/cancel");
         requestDto.setFail_url("ttps://port-0-bookcafe-m5al105w4c7a25c2.sel4.cloudtype.app/rest/payment/fail");
-        https://port-0-bookcafe-m5al105w4c7a25c2.sel4.cloudtype.app/
+
 
         kakaoReady=webClient.post()
                 .uri("/online/v1/payment/ready")
