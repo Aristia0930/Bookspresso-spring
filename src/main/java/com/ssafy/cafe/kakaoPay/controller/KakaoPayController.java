@@ -90,4 +90,21 @@ public class KakaoPayController {
 
 
     }
+
+    @GetMapping("/order")
+    @ResponseBody
+    public ResponseEntity<Boolean> getOrderStatus(HttpServletRequest request) {
+        KakaoApproveResponse payResult = (KakaoApproveResponse) request.getSession().getAttribute("payResult");
+        if (payResult == null) {
+            return ResponseEntity.ok(false);
+        }
+
+        KakaoPaymentOrderRequest orderRequest = new KakaoPaymentOrderRequest();
+        orderRequest.setCid(payResult.getCid());
+        orderRequest.setTid(payResult.getTid());
+
+        KakaoPaymentOrderResponse orderResponse = kakaoPayService.orderResponse(orderRequest);
+
+        return ResponseEntity.ok(Objects.equals(orderResponse.getStatus(), "SUCCESS_PAYMENT"));
+    }
 }
