@@ -1,8 +1,6 @@
 package com.ssafy.cafe.kakaoPay.controller;
 
-import com.ssafy.cafe.kakaoPay.dto.KakaoApproveResponse;
-import com.ssafy.cafe.kakaoPay.dto.KakaoPayReadyResponse;
-import com.ssafy.cafe.kakaoPay.dto.KakaoReadyRequest;
+import com.ssafy.cafe.kakaoPay.dto.*;
 import com.ssafy.cafe.kakaoPay.service.KakaoPayService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -50,4 +48,19 @@ public class KakaoPayController {
         return ResponseEntity.ok("결제오류");
     }
 
+
+    //결제 내역 조회
+    @PostMapping("/order")
+    public ResponseEntity<Boolean> order(@RequestBody KakaoPaymentOrderRequest request){
+
+        KakaoPaymentOrderResponse orderResponse=kakaoPayService.orderResponse(request);
+        if(orderResponse.getStatus()=="SUCCESS_PAYMENT"){
+            return ResponseEntity.ok(true);
+        }else{
+            return ResponseEntity.ok(false);
+        }
+
+
+
+    }
 }

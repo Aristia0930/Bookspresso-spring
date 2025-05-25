@@ -1,9 +1,6 @@
 package com.ssafy.cafe.kakaoPay.service;
 
-import com.ssafy.cafe.kakaoPay.dto.KakaoApproveRequest;
-import com.ssafy.cafe.kakaoPay.dto.KakaoApproveResponse;
-import com.ssafy.cafe.kakaoPay.dto.KakaoPayReadyResponse;
-import com.ssafy.cafe.kakaoPay.dto.KakaoReadyRequest;
+import com.ssafy.cafe.kakaoPay.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -65,6 +62,20 @@ public class KakaoPayService {
                 .bodyValue(requestDto)
                 .retrieve()
                 .bodyToMono(KakaoApproveResponse.class)
+                .block();
+
+    }
+
+    public KakaoPaymentOrderResponse orderResponse (KakaoPaymentOrderRequest request){
+        KakaoApproveRequest requestDto= new KakaoApproveRequest();
+        requestDto.setCid(cid);
+        requestDto.setTid(request.getTid());
+
+        return webClient.post()
+                .uri("/online/v1/payment/order ")
+                .bodyValue(requestDto)
+                .retrieve()
+                .bodyToMono(KakaoPaymentOrderResponse.class)
                 .block();
 
     }
