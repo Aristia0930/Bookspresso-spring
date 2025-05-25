@@ -72,7 +72,7 @@ public class KakaoPayService {
         requestDto.setTid(request.getTid());
 
         return webClient.post()
-                .uri("/online/v1/payment/order ")
+                .uri("/online/v1/payment/order")
                 .bodyValue(requestDto)
                 .retrieve()
                 .bodyToMono(KakaoPaymentOrderResponse.class)
