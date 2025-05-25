@@ -48,7 +48,8 @@ public class ManagerRestController {
 
         int rs = oService.updateOrderStatus(orderId, "Y");
         if (rs == 1) {
-            return ResponseEntity.ok().build();
+            OrderInfo info=oService.getOrderInfo(Math.toIntExact(orderId));
+            return ResponseEntity.ok(info);
         } else {
             return ResponseEntity.badRequest().build();
         }
@@ -63,7 +64,8 @@ public class ManagerRestController {
 
         int rs = oService.updateOrderStatus(orderId, "C");
         if (rs == 1) {
-            return ResponseEntity.ok().build();
+            OrderInfo info=oService.getOrderInfo(Math.toIntExact(orderId));
+            return ResponseEntity.ok(info);
         } else {
             return ResponseEntity.badRequest().build();
         }
