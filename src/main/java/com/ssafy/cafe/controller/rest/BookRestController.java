@@ -52,8 +52,6 @@ public class BookRestController {
 
         rental.setRentalDate(Date.valueOf(today));
         rental.setDueDate(Date.valueOf(due));
-        rental.setRentalDate(bookRental.getRentalDate());
-        rental.setDueDate(bookRental.getDueDate());
 
         // 필요 시 나머지 필드(userId, isbn 등)도 여기서 세팅해야 DB 저장 가능
         rental.setUserId(bookRental.getUserId());
