@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
+import java.util.Objects;
+
 @RestController
 @RequestMapping("/rest/payment")
 @RequiredArgsConstructor
@@ -54,7 +57,8 @@ public class KakaoPayController {
     public ResponseEntity<Boolean> order(@RequestBody KakaoPaymentOrderRequest request){
 
         KakaoPaymentOrderResponse orderResponse=kakaoPayService.orderResponse(request);
-        if(orderResponse.getStatus()=="SUCCESS_PAYMENT"){
+        System.out.println(orderResponse.getStatus());
+        if(Objects.equals(orderResponse.getStatus(), "SUCCESS_PAYMENT")){
             return ResponseEntity.ok(true);
         }else{
             return ResponseEntity.ok(false);
