@@ -89,6 +89,8 @@
         t_book b ON r.isbn = b.isbn
         WHERE
         r.user_id = #{userId}
+        ORDER BY
+        r.rental_date DESC
     </select>
 
 
