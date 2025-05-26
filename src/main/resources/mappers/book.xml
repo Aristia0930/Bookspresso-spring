@@ -48,6 +48,26 @@
         ]]>
 </update>
 
+    <resultMap id="BookRentalInfo" type="com.ssafy.cafe.model.dto.BookRentalInfo">
+        <id property="rentalId" column="rental_id" />
+        <result property="userId" column="user_id" />
+        <result property="isbn" column="isbn" />
+        <result property="rentalDate" column="rental_date" />
+        <result property="dueDate" column="due_date" />
+        <result property="fee" column="fee" />
+        <result property="status" column="rental_status" />
+
+        <!-- 중첩된 Book 객체 매핑 -->
+        <association property="book" javaType="com.ssafy.cafe.model.dto.Book">
+            <id property="isbn" column="book_isbn" />
+            <result property="title" column="title" />
+            <result property="author" column="author" />
+            <result property="summary" column="summary" />
+            <result property="status" column="book_status" />
+            <result property="img" column="img" />
+        </association>
+    </resultMap>
+
     <select id="getRentalInfo" parameterType="string" resultMap="BookRentalInfo">
         SELECT
         r.rental_id,

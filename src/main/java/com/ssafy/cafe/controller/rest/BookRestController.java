@@ -111,7 +111,7 @@ public class BookRestController {
     //유저 대역 내역 조회
     @GetMapping("/rental/list/{userId}")
     @Operation(summary="유저아이디로 대여내역조회",
-            description = "유저아이디로 값을 이용하여 책을 대여 내역 조회한다")
+            description = "유저아이디로 값을 이용하여 책을 대여 내역과 책 내용을 함께 제공한다.")
     public ResponseEntity<List<BookRentalInfo>> getRentalInfo(@PathVariable String userId){
         List<BookRentalInfo> list=bookService.getRentalInfo(userId);
 
