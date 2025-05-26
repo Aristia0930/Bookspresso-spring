@@ -7,47 +7,12 @@
 
 </head>
 <body>
-<!-- 배경 애니메이션 -->
-<div class="bg-circles">
-    <div class="circle"></div>
-    <div class="circle"></div>
-    <div class="circle"></div>
-</div>
+
 
 <div class="container">
     <h1>☕ 북카페 주문이 거의 완료되었어요!</h1>
-    <div id="paymentInfo">
-        <div class="loading-container">
-            <span>마법 같은 결제 처리 중</span>
-            <div class="loading"></div>
-        </div>
-    </div>
-
 
 </div>
 
-<script>
-    // URL 파라미터에서 pg_token 가져오기
-    const urlParams = new URLSearchParams(window.location.search);
-    const pgToken = urlParams.get('pg_token');
-
-    // 예: 서버에 결제 내역 조회 요청
-    fetch('/rest/payment/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ pgToken: pgToken })
-    })
-        .then(res => res.json())
-        .then(data => {
-            if (data === true) {
-                document.getElementById('paymentInfo').innerText = '결제가 완료되었습니다.';
-            } else {
-                document.getElementById('paymentInfo').innerText = '결제 상태를 확인할 수 없습니다.';
-            }
-        })
-        .catch(err => {
-            document.getElementById('paymentInfo').innerText = '결제 조회 중 오류가 발생했습니다.';
-        });
-</script>
 </body>
 </html>
