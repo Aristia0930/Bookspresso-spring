@@ -79,22 +79,23 @@ public class UserRestController {
 
     // 유저정보 린터하기
 
-//    @PreAuthorize("hasRole('USER')")
-//    @PostMapping("/info")
-//    public ResponseEntity<User> userInfo(@AuthenticationPrincipal PrincipalDetails userDetails) {
-//        String userId = userDetails.getUsername();  // 또는 userDetails.getUser().getId()
-//
-//        User info=service.selectUser(userId);
-//
-//        log.debug(userId);
-//        log.debug(String.valueOf(info));
-//
-//        if (info == null) {
-//            return ResponseEntity.badRequest().build();
-//        }
-//        System.out.println(info);
-//        return ResponseEntity.ok(info);
-//    }
+    @PreAuthorize("hasRole('USER')")
+    @PostMapping("/info/jwt")
+    @Operation(summary="jwt 토큰 정보 기반으로 유저 조회")
+    public ResponseEntity<User> userInfo(@AuthenticationPrincipal PrincipalDetails userDetails) {
+        String userId = userDetails.getUsername();  // 또는 userDetails.getUser().getId()
+
+        User info=service.selectUser(userId);
+
+        log.debug(userId);
+        log.debug(String.valueOf(info));
+
+        if (info == null) {
+            return ResponseEntity.badRequest().build();
+        }
+        System.out.println(info);
+        return ResponseEntity.ok(info);
+    }
 
     @PostMapping("/info")
     @Operation(summary="유저 정보 리턴")
