@@ -19,4 +19,6 @@ public class BookRentalScheduler {
         int updatedCount = bookDao.updateOverdueRentals();
         System.out.println("Overdue 상태로 변경된 대여 건수: " + updatedCount);
     }
+
+
 }
