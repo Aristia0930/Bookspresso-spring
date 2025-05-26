@@ -90,7 +90,7 @@
         WHERE
         r.user_id = #{userId}
         ORDER BY
-        r.rental_date DESC
+        r.rental_id DESC
     </select>
 
 
