@@ -2,6 +2,7 @@ package com.ssafy.cafe.model.service;
 
 import com.ssafy.cafe.model.dto.Book;
 import com.ssafy.cafe.model.dto.BookRental;
+import com.ssafy.cafe.model.dto.BookRentalInfo;
 
 import java.util.Date;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface BookService {
 
     int returned(String rentalId);
     int returned2(String isbn);
+
+    List<BookRentalInfo> getRentalInfo(String userId);
 }

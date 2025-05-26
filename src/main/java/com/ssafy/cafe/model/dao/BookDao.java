@@ -2,6 +2,7 @@ package com.ssafy.cafe.model.dao;
 
 import com.ssafy.cafe.model.dto.Book;
 import com.ssafy.cafe.model.dto.BookRental;
+import com.ssafy.cafe.model.dto.BookRentalInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -24,4 +25,7 @@ public interface BookDao {
     BookRental getRental2(String isbn);
 
     int updateOverdueRentals();
+
+    List<BookRentalInfo> getRentalInfo(String userId);
+
 }

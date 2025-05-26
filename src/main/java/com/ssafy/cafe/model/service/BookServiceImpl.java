@@ -3,6 +3,7 @@ package com.ssafy.cafe.model.service;
 import com.ssafy.cafe.model.dao.BookDao;
 import com.ssafy.cafe.model.dto.Book;
 import com.ssafy.cafe.model.dto.BookRental;
+import com.ssafy.cafe.model.dto.BookRentalInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -94,6 +95,12 @@ public class BookServiceImpl implements BookService{
         rental.setStatus("returned");
 
         return bookDao.returned(rental);
+    }
+
+    @Override
+    public List<BookRentalInfo> getRentalInfo(String userId) {
+
+        return bookDao.getRentalInfo(userId);
     }
 
 }

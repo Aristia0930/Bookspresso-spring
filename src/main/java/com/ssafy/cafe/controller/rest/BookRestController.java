@@ -2,6 +2,7 @@ package com.ssafy.cafe.controller.rest;
 
 
 import com.ssafy.cafe.model.dto.BookRental;
+import com.ssafy.cafe.model.dto.BookRentalInfo;
 import com.ssafy.cafe.model.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,7 +108,15 @@ public class BookRestController {
         return ResponseEntity.ok(list);
     }
 
+    //유저 대역 내역 조회
+    @GetMapping("/rental/list/{userId}")
+    @Operation(summary="유저아이디로 대여내역조회",
+            description = "유저아이디로 값을 이용하여 책을 대여 내역 조회한다")
+    public ResponseEntity<List<BookRentalInfo>> getRentalInfo(@PathVariable String userId){
+        List<BookRentalInfo> list=bookService.getRentalInfo(userId);
 
+        return ResponseEntity.ok(list);
+    }
 
 
 

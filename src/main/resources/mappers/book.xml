@@ -48,5 +48,28 @@
         ]]>
 </update>
 
+    <select id="getRentalInfo" parameterType="string" resultMap="BookRentalInfo">
+        SELECT
+        r.rental_id,
+        r.user_id,
+        r.isbn,
+        r.rental_date,
+        r.due_date,
+        r.fee,
+        r.status AS rental_status,
+        b.isbn AS book_isbn,
+        b.title,
+        b.author,
+        b.summary,
+        b.status AS book_status,
+        b.img
+        FROM
+        t_book_rental r
+        JOIN
+        t_book b ON r.isbn = b.isbn
+        WHERE
+        r.user_id = #{userId}
+    </select>
+
 
 </mapper>
