@@ -54,6 +54,7 @@ public class KakaoPayController {
      */
     @GetMapping("/cancel")
     @ResponseBody
+    @Operation(summary="결제 취소시 리턴되는 주소")
 
     public ResponseEntity<String> cancel() {
 
@@ -66,6 +67,7 @@ public class KakaoPayController {
 
     @GetMapping("/fail")
     @ResponseBody
+    @Operation(summary="결제 실패시 리턴되는 주소")
 
     public ResponseEntity<String> fail() {
 
@@ -76,6 +78,7 @@ public class KakaoPayController {
     //결제 내역 조회
     @PostMapping("/order")
     @ResponseBody
+    @Operation(summary="결제 내역 조회")
 
     public ResponseEntity<Boolean> order(@RequestBody KakaoPaymentOrderRequest request){
 
@@ -93,6 +96,7 @@ public class KakaoPayController {
 
     @GetMapping("/order")
     @ResponseBody
+    @Operation(summary="웹 페이지 에서의 결제 내역 조회")
     public ResponseEntity<Boolean> getOrderStatus(HttpServletRequest request) {
         KakaoApproveResponse payResult = (KakaoApproveResponse) request.getSession().getAttribute("payResult");
         if (payResult == null) {
