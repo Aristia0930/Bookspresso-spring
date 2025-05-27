@@ -14,15 +14,17 @@ import com.ssafy.cafe.model.dto.Book;
 import com.ssafy.cafe.model.dto.BookRecommendation;
 import com.ssafy.cafe.model.dto.Product;
 import com.ssafy.cafe.model.dto.ProductWithComment;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import java.time.LocalDateTime;
-
+@Slf4j
 @Service
 public class GptService {
 
@@ -121,26 +123,50 @@ public class GptService {
                 "  \"reason\": \"<책, 음료, 디저트를 추천한 이유를 한국어로 255자 이내로 작성>\"\n" +
                 "}";
 
-        GptRequest request=new GptRequest();
+        GptRequest request = new GptRequest();
         request.setModel(model);
         request.setInput(text);
         request.setTemperature(1.2);
-        GptResponse rs=webClient.post()
-                .uri("v1/responses")
-                .bodyValue(request)
-                .retrieve()
-                .bodyToMono(GptResponse.class)
-                .block();
-
-        System.out.println(rs.getOutput());
-
-        String jsonString =rs.getOutput().get(0).getContent().get(0).getText();
+        try {
 
 
-        ObjectMapper mapper = new ObjectMapper();
-        RecommendationResponse response = mapper.readValue(jsonString, RecommendationResponse.class);
+            GptResponse rs = webClient.post()
+                    .uri("v1/responses")
+                    .bodyValue(request)
+                    .retrieve()
+                    .bodyToMono(GptResponse.class)
+                    .block();
+            if (rs == null || rs.getOutput() == null || rs.getOutput().isEmpty()) {
+                throw new RuntimeException("GPT 응답이 비어 있습니다.");
+            }
 
-        return response;
+            System.out.println(rs.getOutput());
+
+            String jsonString = rs.getOutput().get(0).getContent().get(0).getText();
+
+
+            ObjectMapper mapper = new ObjectMapper();
+            RecommendationResponse response = mapper.readValue(jsonString, RecommendationResponse.class);
+
+            return response;
+        }catch (WebClientResponseException.TooManyRequests ex) {
+            // OpenAI Rate Limit 예외 (HTTP 429)
+            log.warn("OpenAI Rate Limit 초과: {}", ex.getMessage());
+            throw new RuntimeException("AI 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.");
+
+        } catch (WebClientResponseException ex) {
+            // OpenAI에서 다른 HTTP 오류 (예: 401, 500 등)
+            log.error("GPT API 호출 실패: 상태 코드 {}, 응답 {}", ex.getRawStatusCode(), ex.getResponseBodyAsString());
+            throw new RuntimeException("AI 서버 오류가 발생했습니다.");
+
+        } catch (JsonProcessingException ex) {
+            log.error("GPT 응답 JSON 파싱 실패: {}", ex.getMessage());
+            throw ex; // 이건 메서드에 throws 선언되어 있음
+
+        } catch (Exception ex) {
+            log.error("GPT 처리 중 예기치 못한 오류: {}", ex.getMessage(), ex);
+            throw new RuntimeException("AI 추천 처리 중 오류가 발생했습니다.");
+        }
     }
 
     //db 에 넣기
