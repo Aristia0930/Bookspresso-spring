@@ -14,7 +14,7 @@ public class BookRentalScheduler {
     private final BookDao bookDao;
 
     // 매일 새벽 1시에 실행 (cron: 초 분 시 일 월 요일)
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0 1 * * * *")
     public void updateOverdueStatus() {
         int updatedCount = bookDao.updateOverdueRentals();
         System.out.println("Overdue 상태로 변경된 대여 건수: " + updatedCount);
