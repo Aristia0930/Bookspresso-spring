@@ -61,6 +61,9 @@ public class UserRestController {
     @Lazy
     public BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    GoogleTokenVerifier verifier;
+
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "예시 요청",
             required = true,
@@ -98,7 +101,7 @@ public class UserRestController {
         String idTokenString = tokenRequest.getToken();
 
         try {
-            GoogleTokenVerifier verifier = new GoogleTokenVerifier();
+
             GoogleIdToken.Payload payload = verifier.verify(idTokenString);
 
             String userId = payload.getSubject(); // 고유 사용자 ID
