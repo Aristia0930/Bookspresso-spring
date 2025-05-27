@@ -15,8 +15,8 @@
 
 	<insert id="insert" parameterType="User">
 		INSERT INTO t_user
-		(id,name,pass)
-		VALUES(#{id}, #{name}, #{pass})
+		(id,name,pass,role)
+		VALUES(#{id}, #{name}, #{pass},#{role})
 	</insert>
 	
 	<select id="selectById" parameterType="String">
