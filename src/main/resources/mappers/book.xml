@@ -24,7 +24,7 @@
 
     <update id="returned" parameterType="BookRental">
         UPDATE t_book_rental
-        SET status = 'returned',
+        SET status = #{status},
         due_date = #{dueDate},
         fee = #{fee}
         WHERE rental_id = #{rentalId}
