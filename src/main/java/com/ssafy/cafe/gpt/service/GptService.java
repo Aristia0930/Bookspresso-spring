@@ -50,15 +50,50 @@ public class GptService {
     }
 
     public RecommendationResponse gptApiRequest() throws JsonProcessingException {
-        String text="You are a helpful assistant that recommends one book along with a suitable drink and dessert based on the given lists.\n" +
+//        String text="You are a helpful assistant that recommends one book along with a suitable drink and dessert based on the given lists.\n" +
+//                "\n" +
+//                "Available Books (each has: isbn, title, author, summary, status, img):\n" +gptConfig.getBookList() +
+//                "\n" +
+//                "Available Products (each has: id, name, type, price, img; type is 'drink' or 'dessert'):\n" +
+//                gptConfig.getProducts()+
+//                "Please recommend one book and one drink and one dessert that best match the book. \n" +
+//                "\n" +
+//                "Return the response in this exact JSON format only:\n" +
+//                "\n" +
+//                "{\n" +
+//                "  \"book\": {\n" +
+//                "    \"isbn\": \"<isbn>\",\n" +
+//                "    \"title\": \"<title>\",\n" +
+//                "    \"author\": \"<author>\",\n" +
+//                "    \"summary\": \"<summary>\",\n" +
+//                "    \"status\": \"<status>\",\n" +
+//                "    \"img\": \"<img>\"\n" +
+//                "  },\n" +
+//                "  \"drink\": {\n" +
+//                "    \"id\": <id>,\n" +
+//                "    \"name\": \"<name>\",\n" +
+//                "    \"type\": \"drink\",\n" +
+//                "    \"price\": <price>,\n" +
+//                "    \"img\": \"<img>\"\n" +
+//                "  },\n" +
+//                "  \"dessert\": {\n" +
+//                "    \"id\": <id>,\n" +
+//                "    \"name\": \"<name>\",\n" +
+//                "    \"type\": \"dessert\",\n" +
+//                "    \"price\": <price>,\n" +
+//                "    \"img\": \"<img>\"\n" +
+//                "  }\n" +
+//                "}";
+        String text = "당신은 책, 음료, 디저트 목록을 참고하여 책 한 권과 그에 어울리는 음료와 디저트를 추천하는 친절한 어시스턴트입니다.\n" +
                 "\n" +
-                "Available Books (each has: isbn, title, author, summary, status, img):\n" +gptConfig.getBookList() +
+                "사용 가능한 책 목록 (각 항목: isbn, title, author, summary, status, img):\n" + gptConfig.getBookList() +
                 "\n" +
-                "Available Products (each has: id, name, type, price, img; type is 'drink' or 'dessert'):\n" +
-                gptConfig.getProducts()+
-                "Please recommend one book and one drink and one dessert that best match the book. \n" +
+                "사용 가능한 상품 목록 (각 항목: id, name, type, price, img; type은 'drink' 또는 'dessert'):\n" + gptConfig.getProducts() +
                 "\n" +
-                "Return the response in this exact JSON format only:\n" +
+                "책과 가장 잘 어울리는 음료 하나와 디저트 하나를 함께 추천해주세요.\n" +
+                "또한, 추천한 이유를 255자 이내의 한국어로 간결하게 작성해주세요.\n" +
+                "\n" +
+                "다음과 같은 JSON 형식으로만 응답해주세요:\n" +
                 "\n" +
                 "{\n" +
                 "  \"book\": {\n" +
@@ -82,8 +117,10 @@ public class GptService {
                 "    \"type\": \"dessert\",\n" +
                 "    \"price\": <price>,\n" +
                 "    \"img\": \"<img>\"\n" +
-                "  }\n" +
+                "  },\n" +
+                "  \"reason\": \"<책, 음료, 디저트를 추천한 이유를 한국어로 255자 이내로 작성>\"\n" +
                 "}";
+
         GptRequest request=new GptRequest();
         request.setModel(model);
         request.setInput(text);
@@ -114,6 +151,7 @@ public class GptService {
         bookRecommendation.setIsbn(response.getBook().getIsbn());
         bookRecommendation.setDrinkId(response.getDrink().getId());
         bookRecommendation.setDessertId(response.getDessert().getId());
+        bookRecommendation.setReason(response.getReason());
         int rs=recommendationDao.insert(bookRecommendation);
         return rs;
     }
@@ -156,6 +194,7 @@ public class GptService {
         response.setBook(book);
         response.setDrink(product1);
         response.setDessert(product2);
+        response.setReason(bookRecommendation.getReason());
 
         return response;
     }

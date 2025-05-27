@@ -13,4 +13,5 @@ public class RecommendationResponse {
     private Book book;
     private Product drink;
     private Product dessert;
+    String reason;
 }

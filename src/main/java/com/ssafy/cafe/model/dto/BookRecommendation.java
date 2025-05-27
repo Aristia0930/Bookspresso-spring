@@ -15,4 +15,5 @@ public class BookRecommendation {
     private Integer drinkId;           // 음료 ID
     private Integer dessertId;         // 디저트 ID
     private LocalDateTime recommendDate; // 추천 저장 일시
+    private String reason;
 }
