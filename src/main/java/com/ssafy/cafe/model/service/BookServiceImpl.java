@@ -99,6 +99,10 @@ public class BookServiceImpl implements BookService{
             rental.setStatus("returned");
         }
 
+        System.out.println("status = " + rental.getStatus());
+        System.out.println("dueDate = " + rental.getDueDate());
+        System.out.println("fee = " + rental.getFee());
+        System.out.println("rentalId = " + rental.getRentalId());
 
         return bookDao.returned(rental);
     }
