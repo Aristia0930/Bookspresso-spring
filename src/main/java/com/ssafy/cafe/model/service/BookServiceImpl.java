@@ -92,7 +92,7 @@ public class BookServiceImpl implements BookService{
 
         rental.setFee(rental.getFee()+fee);
         rental.setDueDate(Date.valueOf(today)); // 반납일을 오늘로
-
+        System.out.println(rental.getStatus());
         if(rental.getStatus().equals("overdue")){
             rental.setStatus("overdueReturned");
         }else{
