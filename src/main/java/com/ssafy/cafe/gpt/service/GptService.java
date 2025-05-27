@@ -191,9 +191,12 @@ public class GptService {
         product2.setPrice(productw2.getPrice());
         product2.setType(productw2.getType());
 
+
+//        System.out.println(bookRecommendation.toString());
         response.setBook(book);
         response.setDrink(product1);
         response.setDessert(product2);
+//        System.out.println(bookRecommendation.getReason());
         response.setReason(bookRecommendation.getReason());
 
         return response;

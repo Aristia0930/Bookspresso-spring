@@ -10,13 +10,13 @@
 
     <insert id="insert" parameterType="BookRecommendation" useGeneratedKeys="true" keyProperty="recommendationId">
         INSERT INTO t_book_recommendation
-        (isbn, drink_id, dessert_id, recommend_date)
+        (isbn, drink_id, dessert_id, recommend_date,reason)
         VALUES
-        (#{isbn}, #{drinkId}, #{dessertId}, #{recommendDate})
+        (#{isbn}, #{drinkId}, #{dessertId}, #{recommendDate},#{reason})
     </insert>
 
     <select id="select" resultType="BookRecommendation">
-        SELECT recommendation_id, isbn, drink_id, dessert_id, recommend_date
+        SELECT recommendation_id, isbn, drink_id, dessert_id, recommend_date,reason
         FROM t_book_recommendation
         ORDER BY recommend_date DESC
         LIMIT 1
