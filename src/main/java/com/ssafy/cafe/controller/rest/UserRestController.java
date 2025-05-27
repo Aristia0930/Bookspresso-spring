@@ -1,22 +1,30 @@
 package com.ssafy.cafe.controller.rest;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.ssafy.cafe.model.dao.UserDao;
+import com.ssafy.cafe.model.dto.TokenRequest;
+import com.ssafy.cafe.model.service.GoogleTokenVerifier;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 
 
 import com.ssafy.cafe.config.auth.PrincipalDetails;
 import io.swagger.v3.oas.annotations.Operation;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +53,13 @@ public class UserRestController {
 	private UserService service;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    @Lazy
+    public BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             description = "예시 요청",
@@ -75,6 +90,83 @@ public class UserRestController {
 		return ResponseEntity.ok(info);
 
 	}
+
+
+
+    @PostMapping("/oauth")
+    public ResponseEntity<String> loginWithGoogle(@RequestBody TokenRequest tokenRequest, HttpServletResponse response) {
+        String idTokenString = tokenRequest.getToken();
+
+        try {
+            GoogleTokenVerifier verifier = new GoogleTokenVerifier();
+            GoogleIdToken.Payload payload = verifier.verify(idTokenString);
+
+            String userId = payload.getSubject(); // 고유 사용자 ID
+            String email = payload.getEmail();
+            boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
+            String name = (String) payload.get("name");
+            String pictureUrl = (String) payload.get("picture");
+
+            System.out.println("User ID: " + userId);
+            System.out.println("Email: " + email);
+            System.out.println("Email Verified: " + emailVerified);
+            System.out.println("Name: " + name);
+            System.out.println("Picture: " + pictureUrl);
+
+            char[] charArray={'a','b','c','d','e','f','g'};
+
+            String role="ROLE_USER";
+            Random random= new Random();
+            String id="google"+userId;
+            User userEntity=userDao.selectById(id);
+
+            if(userEntity==null){
+
+                StringBuilder ps= new StringBuilder();
+                for (int i=0; i<random.nextInt(5,7); i++){
+                    ps.append(charArray[random.nextInt(6)]);
+                }
+                System.out.println(ps);
+                String password=bCryptPasswordEncoder.encode(ps);
+
+                userEntity=User.builder()
+                        .id(id)
+                        .name(name)
+                        .pass(password)
+                        .provider("google")
+                        .email(email)
+                        .role(role)
+                        .build();
+                userDao.insert(userEntity);
+
+
+
+
+
+            }
+
+
+
+            PrincipalDetails principalDetails = new PrincipalDetails(userEntity);
+            String jwtToken= JWT.create()
+                    .withSubject(principalDetails.getUser().getId())//토큰이름
+                    .withExpiresAt(new Date(System.currentTimeMillis()+(60000*600)))//만료 시간 60000 이 1분
+                    .withClaim("id",principalDetails.getUser().getId())
+                    .withClaim("username",principalDetails.getUser().getName())
+                    .sign(Algorithm.HMAC512("code"));//내 고유의값.
+
+            response.addHeader("Authorization","Bearer "+jwtToken);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+
+
+
 
 
     // 유저정보 린터하기
