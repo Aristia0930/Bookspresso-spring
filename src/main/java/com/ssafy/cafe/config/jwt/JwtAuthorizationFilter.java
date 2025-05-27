@@ -61,7 +61,7 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
         String jwtToken = request.getHeader("Authorization").replace("Bearer ", ""); //토큰만 꺼내기
 
         String username = JWT.require(Algorithm.HMAC512("code")).build().verify(jwtToken)
-                .getClaim("username").asString();
+                .getClaim("id").asString();
         System.out.println(username+" 유저 이름");
         if (username != null) {
             User user = userRepository.selectById(username);
