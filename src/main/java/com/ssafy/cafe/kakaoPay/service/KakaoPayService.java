@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -131,6 +132,43 @@ public class KakaoPayService {
                 .retrieve()
                 .bodyToMono(KakaoPaymentOrderResponse.class)
                 .block();
+
+    }
+
+    //환불
+    public Boolean cancelPay(KakaoPayCancelRequest requestDto) {
+        KakaoPayCancelResponse response;
+        requestDto.setCid(cid);
+
+
+        try {
+            response = webClient.post()
+                    .uri("/online/v1/payment/cancel")
+                    .bodyValue(requestDto)
+                    .retrieve()
+                    .bodyToMono(KakaoPayCancelResponse.class)
+                    .block(); // 동기 호출
+
+            if (response == null || response.getTid() == null) {
+                throw new IllegalStateException("카카오페이 응답이 null이거나 tid가 없음");
+            }
+
+            if(response.getStatus().equals("CANCEL_PAYMENT")){
+                return true;
+            }else{
+                return false;
+            }
+
+
+
+
+
+
+        } catch (Exception e) {
+            // 로깅 및 에러 응답 처리
+            log.error("카카오페이 환불 진행중 예외 발생", e);
+            throw new RuntimeException("카카오페이 환불 실패", e);
+        }
 
     }
 

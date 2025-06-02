@@ -111,4 +111,15 @@ public class KakaoPayController {
 
         return ResponseEntity.ok(Objects.equals(orderResponse.getStatus(), "SUCCESS_PAYMENT"));
     }
+
+    //환불
+    @GetMapping("/cancel")
+    @ResponseBody
+    @Operation(summary="카카오페이 환불, 환불시 tid 와 금액,비과세 금액 필요 결과는 성공이면 true 반환")
+    public ResponseEntity<Boolean> cancelPay(@RequestBody KakaoPayCancelRequest kakaoPayCancelRequest){
+        Boolean kakaoPayCancelResponse=kakaoPayService.cancelPay(kakaoPayCancelRequest);
+
+        return ResponseEntity.ok(kakaoPayCancelResponse);
+
+    }
 }
