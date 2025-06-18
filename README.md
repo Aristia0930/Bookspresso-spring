@@ -47,7 +47,7 @@
 > (아키텍처 이미지 자리 - 필요 시 아래처럼 이미지 삽입)
 
 <p align="center">
-  <img src="/image/architecture.png" width="80%" alt="아키텍처" />
+  <img src="/image/4.png" width="80%" alt="아키텍처" />
 </p>
 
 ---
@@ -79,7 +79,11 @@
 ---
 
 ### 6. 주요 기능
-
+<p align="center">
+  <img src="/image/5.jpg" width="30%" alt="주요기능 이미지 1" />
+  <img src="/image/6.jpg" width="30%" alt="주요기능 이미지 2" />
+  <img src="/image/7.jpg" width="30%" alt="주요기능 이미지 3" />
+</p>
 - **📚 NFC 기반 책 대여·반납 시스템**  
   스마트폰을 책에 태그하면 자동으로 대여/반납 처리  
 
